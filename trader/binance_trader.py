@@ -33,7 +33,7 @@ class BinanceTrader(object):
         :param secret:
         :param trade_type: 交易的类型， only support future and spot.
         """
-        self.http_client = BinanceSpotHttp(api_key=config.api_key, secret=config.secret)
+        self.http_client = BinanceSpotHttp(api_key=config.api_key, secret=config.secret)	# 实例化客户端
 
         self.buy_orders = []  # 买单.
         self.sell_orders = [] # 卖单.
@@ -46,7 +46,7 @@ class BinanceTrader(object):
         bid_price = 0
         ask_price = 0
         if ticker:
-            bid_price = float(ticker.get('bidPrice', 0))
+            bid_price = float(ticker.get('bidPrice', 0))	#字典 get() 函数返回指定键的值，如果键不在字典中返回默认值
             ask_price = float(ticker.get('askPrice', 0))
 
         return bid_price, ask_price
@@ -57,12 +57,12 @@ class BinanceTrader(object):
         :return:
         """
 
-        bid_price, ask_price = self.get_bid_ask_price()
+        bid_price, ask_price = self.get_bid_ask_price()				# 获取最新成交价
         print(f"bid_price: {bid_price}, ask_price: {ask_price}")
 
-        quantity = round_to(float(config.quantity), float(config.min_qty))
+        quantity = round_to(float(config.quantity), float(config.min_qty))	# 价格对价格变动值
 
-        self.buy_orders.sort(key=lambda x: float(x['price']), reverse=True)  # 最高价到最低价.
+        self.buy_orders.sort(key=lambda x: float(x['price']), reverse=True)  # 最高价到最低价.		sort() 函数用于对原列表进行排序，如果指定参数，则使用比较函数指定的比较函数。
         self.sell_orders.sort(key=lambda x: float(x['price']), reverse=True)  # 最高价到最低价.
         print(f"buy orders: {self.buy_orders}")
         print("------------------------------")
@@ -78,7 +78,7 @@ class BinanceTrader(object):
             check_order = self.http_client.get_order(buy_order.get('symbol', config.symbol),client_order_id=buy_order.get('clientOrderId'))
 
             if check_order:
-                if check_order.get('status') == OrderStatus.CANCELED.value:
+                if check_order.get('status') == OrderStatus.CANCELED.value:		# 枚举类通过.value获取实例属性    CANCELED = "CANCELED"
                     buy_delete_orders.append(buy_order)
                     print(f"buy order status was canceled: {check_order.get('status')}")
                 elif check_order.get('status') == OrderStatus.FILLED.value:

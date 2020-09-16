@@ -23,22 +23,23 @@ import logging
 from trader.binance_trader import BinanceTrader
 from utils import config
 
-format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-logging.basicConfig(level=logging.INFO, format=format, filename='grid_trader_log.txt')
-logger = logging.getLogger('binance')
+format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'			#配置日志文件格式
+logging.basicConfig(level=logging.INFO, format=format, filename='grid_trader_log.txt')	#配置日志文件格式
+logger = logging.getLogger('binance')	#配置发送者
 
 if __name__ == '__main__':
 
 
-    config.loads('./config.json')
-    binance_trader = BinanceTrader()
-    orders = binance_trader.http_client.cancel_open_orders(config.symbol)
-    print(f"cancel orders: {orders}")
+    config.loads('./config.json')		# 装载配置文件到config类
+    binance_trader = BinanceTrader()	# 实例化BinanceTrader()
+	'''http_client属性=binance_spot类的实例，并调用了cancel_open_order得方法'''
+    orders = binance_trader.http_client.cancel_open_orders(config.symbol)	# 撤销某个交易对的所有挂单
+    print(f"cancel orders: {orders}")		# 打印取消订单返回得josn
 
     while True:
         try:
-            binance_trader.grid_trader()
-            time.sleep(120)
+            binance_trader.grid_trader()	# 执行网格交易核心逻辑
+            time.sleep(120)					# 等待120秒
 
         except Exception as error:
             print(f"catch error: {error}")

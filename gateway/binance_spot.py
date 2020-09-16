@@ -25,7 +25,7 @@ import requests
 import time
 import hmac
 import hashlib
-from enum import Enum
+from enum import Enum		#对枚举的支持
 from threading import Lock
 
 

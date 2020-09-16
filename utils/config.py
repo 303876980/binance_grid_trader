@@ -67,6 +67,7 @@ class Config:
         """
 
         for k, v in update_fields.items():
-            setattr(self, k, v)
+            setattr(self, k, v)			# setattr() 函数对应函数 getattr()，用于设置属性值，该属性不一定是存在的。
+										# setattr(object, name, value)object -- 对象。name -- 字符串，对象属性。value -- 属性值。
 
-config = Config()
+config = Config()	# 创建实例
